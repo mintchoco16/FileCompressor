@@ -1,40 +1,22 @@
 package kaur.siimar.processor;
-import java.io.File;
-import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
-
-import kaur.siimar.client.ClientMain;
+import kaur.siimar.client.FileDetails;
 
 public class NormalFileProcessingService { // here actual file processing
     // 1. read a file
 
-    public String readFile(String filePath) {
+    public FileDetails readFile(String filePath) {
         String data = "";
 
-        Scanner inputScanner = new Scanner(System.in);
-
         try {
-            FileReader fReader = new FileReader(filePath); // to read file, requires file path
-            StringBuffer strFile = new StringBuffer();
-            int i;
-            int charcount = 0;
-            /*System.out.println("Here is the File content: ");
-            while ((i = fReader.read()) != -1) {
-                charcount += 1;
-                //System.out.println((char)i);
-                strFile.append((char)i);
-            }*/
-
-            // lines 25-26 are a compact implementation of lines 19-22 above
+            // lines 25-26 are a compact implementation of lines 19-22(while loop) above
             Path path = Paths.get(filePath);
-            data = Files.readString(path);
-            System.out.println("Here is the Character Count: "+data.length());
+            data = Files.readString(path); // takes in path but gives out the entire data
+            return new FileDetails(filePath, data.length(), data); // creating object that contains value for these three
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return data;
     }
 }
