@@ -11,19 +11,19 @@ Clone or download the repository and compile the Java files.
 2. Compile the Java files using the command:
 
 ```bash
-javac kaur/siimar/client/*.java kaur/siimar/processor/*.java
+javac kaur/<userid>/client/*.java <userid>/<userid>/processor/*.java
 ```
 
 3. Run the application:
 
 ```bash
-java kaur.siimar.client.ClientMain
+java kaur.<userid>.client.ClientMain
 ```
 
 ## Usage
 
 ```java
-import kaur.siimar.client.InputParser;
+import <userid>.<userid>.client.InputParser;
 
 // Running the InputParser to get file or folder details
 InputParser.inputParser();
@@ -44,8 +44,8 @@ Welcome to the File Compressor!
 Please press '1' for Path of the File or '2' for Path of the Folder you wish to compress: 
 1
 Enter the path: 
-/u5/s32kaur/Documents/testfolder/lorem.txt
-Here is the entered path: /u5/s32kaur/Documents/testfolder/lorem.txt, size of file: 1024
+/path/lorem.txt
+Here is the entered path: /path/lorem.txt, size of file: 1024
 ```
 
 For folder input, it will list all files and their sizes within the folder.
