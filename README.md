@@ -11,7 +11,7 @@ Clone or download the repository and compile the Java files.
 2. Compile the Java files using the command:
 
 ```bash
-javac kaur/<userid>/client/*.java <userid>/<userid>/processor/*.java
+javac <userid>/<userid>/client/*.java <userid>/<userid>/processor/*.java
 ```
 
 3. Run the application:
