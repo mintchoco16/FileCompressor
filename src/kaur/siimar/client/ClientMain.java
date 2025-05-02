@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ClientMain {
     public static void main(String[] args) throws Exception {
@@ -17,6 +18,7 @@ public class ClientMain {
         if (filesList.isEmpty()) {
             System.out.println("There is nothing to compress :( ");
         } else {
+            ExecutorService executor = Executors.newFixedThreadPool(3); // ideally, we should limit the max num of threads being created and so, fixed it to 3 here
             for (int i = 0; i < filesList.size(); ++i) {
                 // fileCompression(filesList, i); // if loop code inside here, we can't do everything simultaneously-> extracted below now!
                 // so, first we create a thread pool-> like collection of threads-> type of way which helps us manage threads & control their behaviour
@@ -27,18 +29,20 @@ public class ClientMain {
                 // once a thread is finished with its work, we can reuse that same thread itself to utilize it to solve another task!
                 // we can create as many threads as we want. No limitation- but we shouldn't create unlimited number of threads- cus of system limitations
                 // ~1 cpu core used per thread execution
-                ExecutorService executor = Executors.newFixedThreadPool(3); // ideally, we should limit the max num of threads being created and so, fixed it to 3 here
+
                 int finalI = i;
-                Runnable task = () -> {
-                    try {
+                Runnable task = () -> { // this is lambda function-> more functional approach as opposed to the usual java's oop approach
+                    try { // both class definition and implementation in the same place here
                         fileCompression(filesList, finalI);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 };
                 executor.submit(task);
-
             }
+            // we'll use combination of shutdown() and awaitTermination()
+            executor.shutdown();
+            executor.awaitTermination(2, TimeUnit.SECONDS);
             System.out.println("Total time taken: " + (System.currentTimeMillis() - startTime) + " milliseconds");
             System.out.println("Number of Files Compressed: "+ filesList.size());
         }
