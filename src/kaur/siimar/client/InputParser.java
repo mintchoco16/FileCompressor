@@ -44,7 +44,7 @@ public class InputParser {
                     System.out.println("Invalid File! ,_, ");
                     return listOfFileDetails;
                 }
-                int fileOrigSize = processedFile.getSize() * 8;
+                long fileOrigSize = processedFile.getSize() * 8;
                 System.out.println("Here is the entered path: " + processedFile.getPath() + ", size of file: " + fileOrigSize);
                 listOfFileDetails.add(processedFile);
             } else if (optionSelect == 2) {
