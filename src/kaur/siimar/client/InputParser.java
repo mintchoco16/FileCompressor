@@ -3,6 +3,8 @@ package kaur.siimar.client;
 import kaur.siimar.processor.NormalFileProcessingService;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -29,15 +31,31 @@ public class InputParser {
             inputScanner.nextLine();
             System.out.println("Enter the path: ");
             String fPath = inputScanner.nextLine();
+            if (fPath == null || fPath.isEmpty()) { // null if user just pressed enter and isEmpty if user pressed spaces and then pressed enter
+                System.out.println("Enter a valid path O.o");
+                return listOfFileDetails;
+            }
 
             if (optionSelect == 1) {
-                FileDetails processedFile = fileProcObj.readFile(fPath); // don't use getPath() here because dealing directly with string input of file path
+                FileDetails processedFile = null; // don't use getPath() here because dealing directly with string input of file path
+                try {
+                    processedFile = fileProcObj.readFile(fPath);
+                } catch (IOException e) {
+                    System.out.println("Invalid File! ,_, ");
+                    return listOfFileDetails;
+                }
                 int fileOrigSize = processedFile.getSize() * 8;
                 System.out.println("Here is the entered path: " + processedFile.getPath() + ", size of file: " + fileOrigSize);
                 listOfFileDetails.add(processedFile);
             } else if (optionSelect == 2) {
                 File folder = new File(fPath);
                 File[] listOfFiles = folder.listFiles();
+
+                // we do the null check first bcs applying .length to null would be complicated -> to avoid shortcircuiting-> NullPointerException
+                if (listOfFiles == null || listOfFiles.length == 0) { // null here actually checks if the folder path is even valid & length == 0 checks if there's any files in the valid folder path
+                    System.out.println("Invalid Folder! ,_, ");
+                    return listOfFileDetails;
+                }
 
                 for (File f : listOfFiles) { // this for loop is in range format, like Python- eg: for f in ___
 
@@ -52,7 +70,7 @@ public class InputParser {
                 System.out.println("Invalid Input Number, please enter either '1' or '2'.");
             }
 
-        } catch (InputMismatchException e) {
+        } catch (InputMismatchException | IOException e) {
             System.out.println("Please enter a valid number.");
         }
 
